@@ -16,6 +16,11 @@ You must first install the NaCl C library before installing the gem.  If you use
 
   gem install nacl
 
+== Install from checkout
+
+  rake gem
+  gem install -l pkg/nacl*.gem
+
 == How To Use
 
 === Public-key Authenticated Encryption
