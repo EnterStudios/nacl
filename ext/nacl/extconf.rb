@@ -1,8 +1,17 @@
+unless nacl = ENV['NACL_HOME']
+	puts "NACL_HOME environment variable missing"
+	exit
+end
+
+hostname = `hostname`.chomp
+builddir = "#{nacl}/build/#{hostname}"
+okabi = `#{builddir}/bin/okabi`.chomp
+libdir = "#{builddir}/lib/#{okabi}"
+incdir = "#{builddir}/include/#{okabi}"
+
+$LDFLAGS << "-Wl,-Bsymbolic-functions -fPIC -lnacl #{libdir}/randombytes.o -L#{libdir}"
+$CFLAGS  << " -fPIC -I#{incdir} "
+
 require 'mkmf'
-
-$LDFLAGS << '-Wl,-Bsymbolic-functions -fPIC -lnacl /opt/pynacl/nacl-20110221/build/rep220/lib/amd64/randombytes.o -L/opt/pynacl/nacl-20110221/build/rep220/lib/amd64'
-
-$CFLAGS << ' -fPIC -I/opt/pynacl/nacl-20110221/build/rep220/include/amd64 '
-
 have_library "nacl"
 create_makefile('nacl/nacl')
